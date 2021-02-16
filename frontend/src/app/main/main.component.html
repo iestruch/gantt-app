@@ -10,6 +10,8 @@
     <div style="display: flex; align-items: center; justify-content: flex-end; padding: 10px">
         <button mat-raised-button color="accent" style="margin-right: 10px;"
             (click)="planning = true">Planificacion</button>
+        <button mat-raised-button color="accent" style="margin-right: 10px;"
+            (click)="invert()">Invertir</button>
         <div style="min-width: 200px;">
             <mat-form-field style="margin-right: 20px">
                 <mat-label>Proyecto</mat-label>
@@ -26,7 +28,8 @@
     <div *ngIf="updating.enabled" style="display: flex; flex-direction: column; padding: 20px">
         <app-updater (added)="addedPlan($event)" [data]="updating.value"></app-updater>
     </div>
-    <app-gant-highcharts *ngIf="chartData && chartData.length > 0; else noData" [data]="chartData" (serieClicked)="issueClicked($event)">
+    <app-gant-highcharts *ngIf="chartData && chartData.length > 0; else noData" [data]="chartData"
+        (serieClicked)="issueClicked($event)">
     </app-gant-highcharts>
 </div>
 
