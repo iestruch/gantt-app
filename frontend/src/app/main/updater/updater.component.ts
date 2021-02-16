@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { stringify } from '@angular/compiler/src/util';
 import { Component, Input, OnInit } from '@angular/core';
 import { of } from 'rxjs';
@@ -42,7 +43,14 @@ export class UpdaterComponent extends PlannerComponent {
   submit() {
     const { label, startDate, endDate, devId, projectId } = this.fg.value;
     this.creating = true;
-    this.updaterService.updateIssue(this.id, label, startDate, endDate, devId, projectId)
+    let _endDate;
+    // In case startDate and endDate are equal ( we are not dealing with time...) just add 1 day
+    if (startDate === endDate) {
+      _endDate = formatDate((new Date(endDate).getTime() + 24*60*60*1000), 'yyyy-MM-dd', 'en', null);
+    } else {
+      _endDate = endDate;
+    }
+    this.updaterService.updateIssue(this.id, label, startDate, _endDate, devId, projectId)
       .pipe(
         catchError((error) => {
           this.error = error;

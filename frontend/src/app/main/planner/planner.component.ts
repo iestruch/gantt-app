@@ -73,7 +73,15 @@ export class PlannerComponent implements OnInit, OnDestroy {
   submit() {
     const { label, startDate, endDate, devId, projectId } = this.fg.value;
     this.creating = true;
-    this.plannerService.createIssue(label, startDate, endDate, devId, projectId)
+    let _endDate;
+    // In case startDate and endDate are equal ( we are not dealing with time...) just add 24 hours to 
+    if (startDate === endDate) {
+      _endDate = formatDate((new Date(endDate).getTime() + 24*60*60*1000), 'yyyy-MM-dd', 'en', null);
+    } else {
+      _endDate = endDate;
+    }
+
+    this.plannerService.createIssue(label, startDate, _endDate, devId, projectId)
       .pipe(
         catchError((error) => {
           this.error = error;

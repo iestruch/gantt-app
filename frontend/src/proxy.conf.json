@@ -1,10 +1,10 @@
 {
     "/auth": {
-      "target": "http://localhost:1337",
+      "target": "http://172.16.123.212:1337",
       "secure": false
     },
     "/graphql": {
-      "target": "http://localhost:1337",
+      "target": "http://172.16.123.212:1337",
       "secure": false
     }
   }
