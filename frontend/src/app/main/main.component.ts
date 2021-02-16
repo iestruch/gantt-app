@@ -51,23 +51,14 @@ export class MainComponent implements OnInit, OnDestroy {
       enabled: false,
       value: null
     };
-    this.developersService.getDevelopers()
+    this.issuesService.getIssues()
       .pipe(
-        takeUntil(this.unsubscribe$),
-        tap(({ data, loading }) => {
-          const { developers } = data as any;
-          this.developers = [...developers];
-          this.teams = [...new Set(developers.map(dev => dev.team))];
-        }),
-        switchMap(() => this.projectsService.getProjects()),
-        tap(({ data, loading }) => {
-          const { projects } = data as any;
-          this.projects = [...projects];
-        }),
-        switchMap(() => this.issuesService.getIssues()),
         tap(({ data, loading }) => {
           const { issues } = data as any;
           this.issues = [...issues];
+          this.developers = [...new Map(this.issues.map(issue => issue.devId).map(dev => [dev['id'],dev])).values()];
+          this.teams = [...new Map(this.developers.map(dev => dev.team).map(team => [team['id'],team])).values()];
+          this.projects = [...new Map(this.issues.map(issue => issue.projectId).map(project => [project['id'],project])).values()];
         }),
         catchError((error) => {
           this.chartData = [];
@@ -97,7 +88,10 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   createChartData() {
+    let developers;
+    let projects;
     if (this.groupVariable === 'developers') {
+      this.developers = [...new Map(this.issues.map(issue => issue.devId).map(dev => [dev['id'],dev])).values()];
       this.chartData = [
         ...this.developers
           .filter((dev) => this.teamSelected === '0' ? dev : dev.team.id === this.teamSelected)
@@ -114,6 +108,7 @@ export class MainComponent implements OnInit, OnDestroy {
           }))
       ];
     } else if (this.groupVariable === "projects") {
+      this.projects = [...new Map(this.issues.map(issue => issue.projectId).map(project => [project['id'],project])).values()];
       this.chartData = [
         ...this.projects
           .map((item) => ({ id: item.id, name: item.name })),
@@ -137,8 +132,8 @@ export class MainComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loading = false;
       this.createChartData();
-    },300)
-    
+    }, 300)
+
   }
 
   addedPlan(value) {
@@ -154,7 +149,7 @@ export class MainComponent implements OnInit, OnDestroy {
     const issue = this.issues.find(issue => issue.id === $event.id);
     if (!issue) { return; }
     this.updating = { ...this.updating, enabled: true, value: { ...issue } };
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   reloadIssues(teamFilter: string) {

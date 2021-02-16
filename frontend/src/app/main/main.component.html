@@ -14,7 +14,7 @@
             (click)="invert()">Invertir</button>
         <div style="min-width: 200px;">
             <mat-form-field style="margin-right: 20px">
-                <mat-label>Proyecto</mat-label>
+                <mat-label>Equipo</mat-label>
                 <mat-select [ngModel]="teamSelected" (selectionChange)="teamChanged($event)">
                     <mat-option value="0">All</mat-option>
                     <mat-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</mat-option>
