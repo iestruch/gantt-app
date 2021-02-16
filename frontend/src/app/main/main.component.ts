@@ -154,6 +154,7 @@ export class MainComponent implements OnInit, OnDestroy {
     const issue = this.issues.find(issue => issue.id === $event.id);
     if (!issue) { return; }
     this.updating = { ...this.updating, enabled: true, value: { ...issue } };
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   reloadIssues(teamFilter: string) {
