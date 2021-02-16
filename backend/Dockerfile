@@ -1,0 +1,11 @@
+FROM strapi/strapi
+
+ENV NODE_ENV=development
+ENV DATABASE_CLIENT=mongo
+ENV DATABASE_NAME=backend
+ENV DATABASE_HOST=db
+ENV DATABASE_PORT=27017
+
+COPY ./ /srv/app
+
+EXPOSE 1337

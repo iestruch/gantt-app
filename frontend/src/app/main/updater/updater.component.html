@@ -1,0 +1,61 @@
+<mat-card *ngIf="!loading; else dataLoading">
+    <form [formGroup]="fg" style="display: flex;flex-direction: column;" (submit)="submit()">
+        <mat-form-field style="margin-right: 20px">
+            <mat-label>Label</mat-label>
+            <input type="text" matInput formControlName="label" placeholder="Ex. Issue 101">
+        </mat-form-field>
+        <div style="display: flex;">
+            <mat-form-field style="margin-right: 20px">
+                <mat-label>Fecha Inicio</mat-label>
+                <input type="date" matInput formControlName="startDate">
+            </mat-form-field>
+            <mat-form-field style="margin-right: 20px">
+                <mat-label>Fecha Fin</mat-label>
+                <input type="date" matInput formControlName="endDate">
+            </mat-form-field>
+        </div>
+        <div style="display: flex;">
+            <mat-form-field style="margin-right: 20px">
+                <mat-label>Proyecto</mat-label>
+                <mat-select formControlName="projectId">
+                    <mat-option *ngFor="let project of projectsCollection" [value]="project.id">{{project.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="margin-right: 20px">
+                <mat-label>Desarrollador</mat-label>
+                <mat-select matInput formControlName="devId">
+                    <mat-option *ngFor="let dev of developersCollection" [value]="dev.id">{{dev.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div style="display:flex; align-items:center">
+            <button mat-raised-button type="submit" color="accent"
+                style="height: min-content; width: 100px; display: flex; justify-content: center; margin-right: 10px;"
+                [disabled]="!fg.valid">
+                <span *ngIf="!creating">Actualizar</span>
+                <mat-spinner *ngIf="creating" diameter="20" style="margin: 10px;" color="primary"></mat-spinner>
+            </button>
+            <button mat-raised-button type="button" color="accent" (click)="remove()"
+                style="height: min-content; width: 100px; display: flex; justify-content: center; margin-right: 10px;"
+                [disabled]="!fg.valid">
+                <span *ngIf="!removing">Eliminar</span>
+                <mat-spinner *ngIf="removing" diameter="20" style="margin: 10px;" color="primary"></mat-spinner>
+            </button>
+            <button mat-raised-button type="button" color="primary" (click)="cancel()"
+                style="height: min-content; width: 100px; display: flex; justify-content: center;">
+                <span>Cancelar</span>
+            </button>
+        </div>
+    </form>
+</mat-card>
+
+<ng-template #dataLoading>
+    <div style="display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    justify-content: center;">
+        <mat-spinner diameter="20"></mat-spinner>
+    </div>
+</ng-template>

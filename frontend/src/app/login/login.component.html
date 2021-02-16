@@ -1,0 +1,22 @@
+<div
+    style="width: 100vw; height: 100vh;overflow:hidden; background-color: #673ab7;display: flex; flex-direction: column; justify-content: center;">
+    <div style="background-color: white; display: flex; flex-direction: column; padding: 10px">
+        <form [formGroup]="fg" style="display: flex; align-items: center; justify-content: flex-end;" (submit)="submit($event)">
+            <mat-form-field class="example-full-width" style="margin-right: 20px; width: 300px; position:relative">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                <span *ngIf="error" style="position:absolute; left:0;bottom:-15px; color:red; font-size: xx-small;"><strong>Invalid credentials</strong></span>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" style="margin-right: 20px; width: 300px">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="pass">
+            </mat-form-field>
+            <button mat-raised-button type="submit" color="primary"
+                style="height: min-content; width: 100px; display: flex; justify-content: center;" [disabled]="loading">
+                <span *ngIf="!loading">Login</span>
+                <mat-spinner *ngIf="loading" diameter="20" style="margin: 10px;"></mat-spinner>
+            </button>
+            
+        </form>
+    </div>
+</div>
