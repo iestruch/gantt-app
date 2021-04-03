@@ -1,0 +1,10 @@
+{
+    "/auth": {
+      "target": "http://172.16.123.212:1337",
+      "secure": false
+    },
+    "/graphql": {
+      "target": "http://172.16.123.212:1337",
+      "secure": false
+    }
+  }

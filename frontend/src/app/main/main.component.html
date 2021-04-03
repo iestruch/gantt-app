@@ -1,0 +1,52 @@
+<mat-toolbar style="display: flex;">
+    <div style="flex: 1;"></div>
+    <div>
+        <button mat-icon-button matTooltip="Info about the action" (click)="logout()">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+<div>
+    <div style="display: flex; align-items: center; justify-content: flex-end; padding: 10px">
+        <button mat-raised-button color="accent" style="margin-right: 10px;"
+            (click)="planning = true">Planificacion</button>
+        <button mat-raised-button color="accent" style="margin-right: 10px;"
+            (click)="invert()">Invertir</button>
+        <div style="min-width: 200px;">
+            <mat-form-field style="margin-right: 20px">
+                <mat-label>Equipo</mat-label>
+                <mat-select [ngModel]="teamSelected" (selectionChange)="teamChanged($event)">
+                    <mat-option value="0">All</mat-option>
+                    <mat-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div *ngIf="planning" style="display: flex; flex-direction: column; padding: 20px">
+        <app-planner (added)="addedPlan($event)"></app-planner>
+    </div>
+    <div *ngIf="updating.enabled" style="display: flex; flex-direction: column; padding: 20px">
+        <app-updater (added)="addedPlan($event)" [data]="updating.value"></app-updater>
+    </div>
+    <app-gant-highcharts *ngIf="chartData && chartData.length > 0; else noData" [data]="chartData"
+        (serieClicked)="issueClicked($event)">
+    </app-gant-highcharts>
+</div>
+
+<ng-template #dataLoading>
+    <div style="display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    justify-content: center;">
+        <mat-spinner diameter="20"></mat-spinner>
+    </div>
+</ng-template>
+
+<ng-template #noData>
+    <div *ngIf="!loading; else dataLoading" style="display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 200px;
+    justify-content: center;">No hay issues</div>
+</ng-template>
